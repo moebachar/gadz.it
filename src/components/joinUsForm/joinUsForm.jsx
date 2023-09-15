@@ -33,7 +33,7 @@ const Alert1 = React.forwardRef(function Alert(props, ref) {
 
 const schema = {
   fullName: Joi.string().min(4).max(32).required().label("Full Name"),
-  email: Joi.string().email().required().label("Email Adress"),
+  email: Joi.string().required().label("Email Adress"),
   phone: Joi.string()
     .regex(/^[0-9+\s]*$/)
     .required()
