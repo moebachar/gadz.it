@@ -79,6 +79,7 @@ function AdminConsole() {
   const [usersList, setUsersList] = useState([]);
   const [addedUsers, setAddedUsers] = useState([]);
   const [key, setKey] = useState("");
+  const [numberOfJoinedUsers, setNumberOfJoinedUsers] = useState(0);
 
   useEffect(() => {
     const getAdmin = async () => {
@@ -87,7 +88,10 @@ function AdminConsole() {
         return { uid: doc.id, ...doc.data() };
       });
       setUsers(mappedUsers);
+      const ju = await getDocs(collection(db, "joined_users"));
+      setNumberOfJoinedUsers(ju.size);
     };
+
     getAdmin();
   }, []);
 
@@ -270,6 +274,7 @@ function AdminConsole() {
 
         <div className="console__manage-users">
           <div className="console__add-user__title">Manage Members</div>
+          <div className="console__joined_users">{`number of joined users ${numberOfJoinedUsers}`}</div>
         </div>
       </div>
     );
