@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { WORKSHOPS } from "../../utils/constants";
 import "./confirmation.scss";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 //MUI
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
@@ -19,7 +20,7 @@ import MuiAlert from "@mui/material/Alert";
 //Firebase
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "../../configs/firebaseConfig";
-import { useNavigate } from "react-router-dom";
+
 
 const MyAlert = React.forwardRef(function MyAlert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;

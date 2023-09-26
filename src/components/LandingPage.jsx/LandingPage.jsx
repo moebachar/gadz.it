@@ -17,7 +17,7 @@ function LandingPage(props) {
   return (
     <>
       <NavBar />
-      <JoinUs endDate={new Date(2023, 8, 25, 19, 27)} />
+      <JoinUs endDate={new Date(2023, 9, 5, 19, 27)} />
       <main>
         <AlternativeCarousel />
         {user && <Calendar />}
