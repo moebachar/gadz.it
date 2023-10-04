@@ -27,14 +27,14 @@ function AlternativeCarousel(props) {
     <div id="announce">
       <Carousel
         autoPlay
-        interval={3000}
+        interval={2000}
         infiniteLoop
-        stopOnHover
         swipeable
         showThumbs={false}
         centerMode
         centerSlidePercentage={50}
         showIndicators={false}
+        selectedItem={3}
       >
         {slides.map(({ image, link, index }) => (
           <div
