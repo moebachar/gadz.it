@@ -80,6 +80,7 @@ function AdminConsole() {
   const [addedUsers, setAddedUsers] = useState([]);
   const [key, setKey] = useState("");
   const [numberOfJoinedUsers, setNumberOfJoinedUsers] = useState(0);
+  const [workshop_orders, setWorkshops_order] = useState([]);
 
   useEffect(() => {
     const getAdmin = async () => {
@@ -90,10 +91,38 @@ function AdminConsole() {
       setUsers(mappedUsers);
       const ju = await getDocs(collection(db, "joined_users"));
       setNumberOfJoinedUsers(ju.size);
+      const ws = await getDocs(collection(db, "workshops_orders"));
+      setWorkshops_order(
+        ws.docs.map((doc) => {
+          return { ...doc.data() };
+        })
+      );
     };
 
     getAdmin();
   }, []);
+
+  const countWorkshops = () => {
+    let python = 0;
+    let c = 0;
+    let web = 0;
+
+    for (let order of workshop_orders) {
+      let workshops = order.workshops; // Assuming each order has a property named workshops
+
+      for (let workshop of workshops) {
+        if (workshop === "Python") {
+          python++;
+        } else if (workshop === "C++") {
+          c++;
+        } else if (workshop === "Web Dev") {
+          web++;
+        }
+      }
+    }
+
+    return { c: c, python: python, web: web };
+  };
 
   const onSubmit = async (data) => {
     data["cell"] = cell;
@@ -140,6 +169,8 @@ function AdminConsole() {
     setAddedUsers([...addedUsers, ...succesAdded]);
     setLoading(false);
   };
+
+  const { c, python, web } = countWorkshops();
   if (key === ADMIN_PASSWORD)
     return (
       <div className="console">
@@ -275,6 +306,7 @@ function AdminConsole() {
         <div className="console__manage-users">
           <div className="console__add-user__title">Manage Members</div>
           <div className="console__joined_users">{`number of joined users ${numberOfJoinedUsers}`}</div>
+          <div className="console__workshops">{`C++ : ${c} \n Python : ${python} \n Web Dev : ${web}`}</div>
         </div>
       </div>
     );
