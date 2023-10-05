@@ -81,6 +81,7 @@ function AdminConsole() {
   const [key, setKey] = useState("");
   const [numberOfJoinedUsers, setNumberOfJoinedUsers] = useState(0);
   const [workshop_orders, setWorkshops_order] = useState([]);
+  const [joined_users, setJoinedUsers] = useState([]);
 
   useEffect(() => {
     const getAdmin = async () => {
@@ -91,6 +92,10 @@ function AdminConsole() {
       setUsers(mappedUsers);
       const ju = await getDocs(collection(db, "joined_users"));
       setNumberOfJoinedUsers(ju.size);
+      const joined = ju.docs.map((doc) => {
+        return { ...doc.data() };
+      });
+      setJoinedUsers(joined);
       const ws = await getDocs(collection(db, "workshops_orders"));
       setWorkshops_order(
         ws.docs.map((doc) => {
@@ -169,6 +174,50 @@ function AdminConsole() {
     setAddedUsers([...addedUsers, ...succesAdded]);
     setLoading(false);
   };
+
+  function convertToCSV(data) {
+    // Ensure the input is not empty
+    if (data.length === 0) {
+      console.error("Input data is empty.");
+      return;
+    }
+
+    // Extract column headers (keys) from the first object
+    const columns = Object.keys(data[0]);
+
+    // Create a CSV string
+    const csvContent =
+      columns.join(",") +
+      "\n" +
+      data
+        .map((item) =>
+          columns
+            .map((col) => {
+              // If the value is an array, concatenate into a space-separated string
+              const value = Array.isArray(item[col])
+                ? item[col].join(" ")
+                : item[col];
+              return value;
+            })
+            .join(",")
+        )
+        .join("\n");
+
+    // Create a Blob containing the CSV data
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8" });
+
+    // Create a link element to trigger the download
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "output.csv";
+
+    // Append the link to the document and trigger the click event
+    document.body.appendChild(link);
+    link.click();
+
+    // Remove the link from the document
+    document.body.removeChild(link);
+  }
 
   const { c, python, web } = countWorkshops();
   if (key === ADMIN_PASSWORD)
@@ -305,8 +354,18 @@ function AdminConsole() {
 
         <div className="console__manage-users">
           <div className="console__add-user__title">Manage Members</div>
-          <div className="console__joined_users">{`number of joined users ${numberOfJoinedUsers}`}</div>
-          <div className="console__workshops">{`C++ : ${c} \n Python : ${python} \n Web Dev : ${web}`}</div>
+          <div className="console__joined_users">
+            {`number of joined users ${numberOfJoinedUsers}`}{" "}
+            <button type="button" onClick={() => convertToCSV(joined_users)}>
+              download users
+            </button>
+          </div>
+          <div className="console__workshops">
+            {`C++ : ${c} \n Python : ${python} \n Web Dev : ${web}`}
+            <button type="button" onClick={() => convertToCSV(workshop_orders)}>
+              download orders
+            </button>
+          </div>
         </div>
       </div>
     );
