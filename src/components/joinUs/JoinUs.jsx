@@ -100,7 +100,9 @@ function JoinUs({ endDate }) {
         </div>
         <div className="join-us__content__bottom">
           <span>WE ARE RECRUITING</span>
-          <button onClick={() => navigate("/join-us")}>Join Us</button>
+          <button onClick={() => navigate("/join-us")} disabled>
+            Join Us
+          </button>
         </div>
       </div>
     </div>

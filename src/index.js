@@ -30,10 +30,10 @@ const router = createBrowserRouter([
     element: <App />,
     errorElement: <ErrorPage />,
   },
-  {
-    path: "/workshops-order",
-    element: <WorkshopsFormsStepper />,
-  },
+  // {
+  //   path: "/workshops-order",
+  //   element: <WorkshopsFormsStepper />,
+  // },
   {
     path: "/login",
     element: <Login />,
@@ -42,7 +42,7 @@ const router = createBrowserRouter([
     path: "/admin-console",
     element: <AdminConsole />,
   },
-  { path: "/join-us", element: <JoinUsForm /> },
+  // { path: "/join-us", element: <JoinUsForm /> },
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));

@@ -36,6 +36,7 @@ function AlternativeWorkshopsFrame(props) {
             type="button"
             className="our-courses__main__description__registration"
             onClick={() => navigate("/workshops-order")}
+            disabled
           >
             Registration <img src={row} />
           </button>
@@ -65,6 +66,7 @@ function AlternativeWorkshopsFrame(props) {
         type="button"
         className="our-courses__registration--sub"
         onClick={() => navigate("/workshops-order")}
+        disabled
       >
         Registration <img src={row} />
       </button>
